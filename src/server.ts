@@ -1,5 +1,5 @@
 function login(username: string) {
-    return true;
+    return username;
 }
 
 login('admin');
