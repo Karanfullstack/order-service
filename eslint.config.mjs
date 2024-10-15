@@ -5,9 +5,13 @@ import eslintConfigPrettier from 'eslint-config-prettier';
 export default tseslint.config(
     {
         rules: {
-            'no-console': 'error',
             'dot-notation': 'error',
         },
+    },
+    {
+        ignores: [
+            'dist/*', // ignore its content
+        ],
     },
     eslintConfigPrettier,
     eslint.configs.recommended,

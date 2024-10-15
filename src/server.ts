@@ -1,6 +1,3 @@
-function login(username: string) {
-    const user = { name: 'kran' };
-    return username + user.name;
-}
+import { Config } from './config';
 
-login('admin');
+console.log('PORT', Config.PORT);

@@ -4,7 +4,7 @@
     "description": "A user management service",
     "main": "index.js",
     "scripts": {
-        "dev": "node src/index.js",
+        "dev": "npm run build && node dist/server.js",
         "build": "npx tsc",
         "format:check": "prettier --check .",
         "format:fix": "prettier --write .",
@@ -31,5 +31,8 @@
             "npm run lint:fix",
             "npm run format:fix"
         ]
+    },
+    "dependencies": {
+        "dotenv": "^16.4.5"
     }
 }
