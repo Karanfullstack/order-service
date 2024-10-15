@@ -6,14 +6,22 @@ export default tseslint.config(
     {
         rules: {
             'dot-notation': 'error',
+            'no-console': 'error',
         },
     },
     {
-        ignores: [
-            'dist/*', // ignore its content
-        ],
+        ignores: ['dist/**/*.ts', 'dist/**', '**/*.mjs', 'eslint.config.mjs', '**/*.js'],
     },
     eslintConfigPrettier,
     eslint.configs.recommended,
-    ...tseslint.configs.recommended,
+    ...tseslint.configs.recommendedTypeChecked,
+    {
+        languageOptions: {
+            parserOptions: {
+                project: './tsconfig.json',
+                projectService: true,
+                tsconfigRootDir: import.meta.dirname,
+            },
+        },
+    },
 );
