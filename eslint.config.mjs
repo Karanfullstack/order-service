@@ -1,27 +1,49 @@
-// @ts-check
 import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
-import eslintConfigPrettier from 'eslint-config-prettier';
+import prettier from 'eslint-config-prettier';
+import globals from 'globals';
+
 export default tseslint.config(
+   // global ignores
    {
+      ignores: ['dist/', 'node_modules/'],
+   },
+
+   // applies to everything
+   eslint.configs.recommended,
+
+   // applies only to ts files
+   {
+      name: 'tseslint',
+      files: ['src/**/*.ts'],
+      extends: [
+         //
+         ...tseslint.configs.recommendedTypeChecked,
+      ],
+      plugins: {
+         '@typescript-eslint': tseslint.plugin,
+      },
+      languageOptions: {
+         parser: tseslint.parser,
+         parserOptions: {
+            project: true,
+         },
+      },
       rules: {
-         'dot-notation': 'error',
-         'no-console': 'error',
+         '@typescript-eslint/no-unused-vars': 'off',
+         '@typescript-eslint/require-await': 'off',
       },
    },
-   {
-      ignores: ['dist/**/*.ts', 'dist/**', '**/*.mjs', 'eslint.config.mjs', '**/*.js'],
-   },
-   eslintConfigPrettier,
-   eslint.configs.recommended,
-   ...tseslint.configs.recommendedTypeChecked,
+
+   // global variables, applies to everything
    {
       languageOptions: {
-         parserOptions: {
-            project: './tsconfig.json',
-            projectService: true,
-            tsconfigRootDir: import.meta.dirname,
+         globals: {
+            ...globals.node,
          },
       },
    },
+
+   // prettier config
+   prettier,
 );
