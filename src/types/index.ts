@@ -5,7 +5,7 @@ export interface AuthRequest extends Request {
         role: string;
         jti: string;
         email: string;
-        firstName: string;
+        name: string;
         lastName: string;
         tenant: string;
     };
