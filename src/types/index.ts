@@ -1,4 +1,12 @@
+import { Request } from 'express';
+
 export interface AuthRequest extends Request {
+    body: {
+        text: string;
+    };
+    params: {
+        id: string;
+    };
     auth: {
         id?: string;
         sub: string;

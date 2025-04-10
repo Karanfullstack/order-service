@@ -13,17 +13,20 @@ export interface Customer {
     addresses?: Address[];
 }
 
-const AddressSchema = new Schema<Address>({
-    text: {
-        type: String,
-        required: true,
+const AddressSchema = new Schema<Address>(
+    {
+        text: {
+            type: String,
+            required: true,
+        },
+        isDefault: {
+            type: Boolean,
+            required: false,
+            default: false,
+        },
     },
-    isDefault: {
-        type: Boolean,
-        required: false,
-        default: false,
-    },
-});
+    { _id: false },
+);
 
 const customerSchema = new Schema<Customer>(
     {

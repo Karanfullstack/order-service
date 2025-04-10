@@ -11,4 +11,12 @@ router.get(
     asyncWrapper(customerController.get.bind(customerController) as unknown as RequestHandler),
 );
 
+router.patch(
+    '/address/:id',
+    authenticate,
+    asyncWrapper(
+        customerController.addAddress.bind(customerController) as unknown as RequestHandler,
+    ),
+);
+
 export default router;

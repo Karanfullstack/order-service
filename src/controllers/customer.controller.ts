@@ -1,4 +1,4 @@
-import { Response } from 'express';
+import { NextFunction, Response } from 'express';
 import logger from '../config/logger';
 import { AuthRequest } from '../types';
 import Customer from '../models/customer.model';
@@ -22,6 +22,31 @@ class CustomerController {
 
         logger.info('Customer', customer);
         res.json({ message: 'ok', customer });
+    }
+
+    async addAddress(req: AuthRequest, res: Response, _next: NextFunction) {
+        const auth = req.auth;
+        const _id = req.params.id;
+        const addressText = req.body.text;
+
+        const addAddress = await Customer.findOneAndUpdate(
+            { _id, userId: auth.sub },
+            {
+                $push: {
+                    addresses: {
+                        text: addressText,
+                    },
+                },
+            },
+            { new: true },
+        );
+        if (!addAddress) {
+            return res.status(404).json({ message: 'Customer not found' });
+        }
+        return res.json({
+            message: 'Address has been added',
+            addAddress,
+        });
     }
 }
 
