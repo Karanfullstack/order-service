@@ -1,7 +1,10 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
+import logger from '../config/logger';
+import { AuthRequest } from '../types';
 
 class CustomerController {
-    async get(req: Request, res: Response) {
+    async get(req: AuthRequest, res: Response) {
+        logger.info('AuthRequest', req.auth);
         res.json({ message: 'ok' });
     }
 }
