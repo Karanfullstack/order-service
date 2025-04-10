@@ -1,27 +1,20 @@
-import express, { NextFunction, Request, Response } from 'express';
-import { HttpError } from 'http-errors';
-import logger from './config/logger';
+import express from 'express';
+import { globalError } from './common/errorHandler';
+import customerRouter from './routes/customer.routes';
+import cookieParser from 'cookie-parser';
 
 const app = express();
-
+app.use(express.json());
+app.use(cookieParser());
+app.use(express.static('public'));
+app.use(express.urlencoded({ extended: true }));
 app.get('/', async (req, res) => {
-   res.send('health-check');
+    res.send('health-check');
 });
 
-app.use((error: HttpError, req: Request, res: Response, next: NextFunction) => {
-   logger.error(error.message);
-   const statusCode = error.statusCode || 500;
+// routes
+app.use('/customer', customerRouter);
 
-   res.status(statusCode).json({
-      errors: [
-         {
-            type: error.name,
-            msg: error.message,
-            path: '',
-            location: '',
-         },
-      ],
-   });
-});
-
+// global error handler
+app.use(globalError);
 export default app;

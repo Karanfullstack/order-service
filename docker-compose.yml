@@ -1,0 +1,30 @@
+services:
+    app:
+        build:
+            context: .
+            dockerfile: docker/development/Dockerfile
+        container_name: order-service
+        ports:
+            - 5503:5503
+        volumes:
+            - .:/usr/app # Mount local code into container
+            - node_modules:/usr/app/node_modules # Avoid overwriting node_modules
+        environment:
+            - NODE_ENV=development
+        env_file:
+            - .env.local
+        depends_on:
+            - mongodb
+        restart: unless-stopped
+    mongodb:
+        image: mongo
+        container_name: orders-service-db
+        restart: unless-stopped
+        ports:
+            - '27018:27017'
+        volumes:
+            - mongodb_orders_data:/data/db
+
+volumes:
+    node_modules:
+    mongodb_orders_data:
