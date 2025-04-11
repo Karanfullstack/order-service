@@ -9,9 +9,13 @@ import { AddressPayload } from '../repository/interfaces/interface.repo';
 
 class CustomerController {
     constructor(@inject(TYPES.CustomerService) private service: CustomerServiceI) {}
+
+    // @ Create Customer Controller
     async get(req: AuthRequest, res: Response) {
         const auth = req.auth;
+
         logger.info('AuthRequest', auth);
+
         const customer = await CustomerModel.findOne({ email: auth.email }).lean();
 
         const customerData = {
@@ -20,6 +24,7 @@ class CustomerController {
             firstName: auth.name,
             lastName: auth.lastName,
         };
+
         logger.info('Receiving Body', customerData);
 
         if (!customer) {
@@ -29,16 +34,20 @@ class CustomerController {
         }
 
         logger.info('Customer is already created', customer);
+
         res.json({ message: 'ok', customer });
     }
 
+    // @ Add Address Controller
     async addAddress(req: AuthRequest, res: Response, _next: NextFunction) {
         const auth = req.auth;
         const _id = req.params.id;
         const address = req.body.text;
 
         const payload: AddressPayload = { userId: auth.sub, _id, address };
+
         logger.info('Address Payload', payload);
+
         const addAddress = await this.service.addAddress(payload);
 
         if (!addAddress) {
@@ -47,6 +56,7 @@ class CustomerController {
         }
 
         logger.info('Address has been added', addAddress);
+
         return res.json({
             message: 'Address has been added',
             addAddress,
