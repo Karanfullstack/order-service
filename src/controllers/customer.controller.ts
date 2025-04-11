@@ -1,17 +1,17 @@
 import { NextFunction, Response } from 'express';
 import logger from '../config/logger';
-import { AuthRequest } from '../types';
+import { CustomerRequest } from '../types';
 import CustomerModel from '../models/customer.model';
 import { inject } from 'inversify';
 import { TYPES } from '../const';
-import { CustomerServiceI } from '../services/interfaces/interface.service';
-import { AddressPayload } from '../repository/interfaces/interface.repo';
+import { CustomerServiceI } from '../services/interfaces/customer.interface';
+import { AddressPayload } from '../repository/interfaces/customer.interface';
 
 class CustomerController {
     constructor(@inject(TYPES.CustomerService) private service: CustomerServiceI) {}
 
     // @ Create Customer Controller
-    async get(req: AuthRequest, res: Response) {
+    async get(req: CustomerRequest, res: Response) {
         const auth = req.auth;
 
         logger.info('AuthRequest', auth);
@@ -39,7 +39,7 @@ class CustomerController {
     }
 
     // @ Add Address Controller
-    async addAddress(req: AuthRequest, res: Response, _next: NextFunction) {
+    async addAddress(req: CustomerRequest, res: Response, _next: NextFunction) {
         const auth = req.auth;
         const _id = req.params.id;
         const address = req.body.text;

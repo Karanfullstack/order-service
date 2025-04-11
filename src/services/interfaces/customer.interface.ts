@@ -1,5 +1,5 @@
 import { Customer } from '../../models/customer.model';
-import { AddressPayload } from '../../repository/interfaces/interface.repo';
+import { AddressPayload } from '../../repository/interfaces/customer.interface';
 
 export interface CustomerServiceI {
     createCustomer(customer: Customer): Promise<Customer | null>;

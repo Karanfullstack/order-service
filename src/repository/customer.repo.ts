@@ -1,6 +1,6 @@
 import { injectable } from 'inversify';
 import CustomerModel, { Customer } from '../models/customer.model';
-import { AddressPayload, CustomerRepositoryI } from './interfaces/interface.repo';
+import { AddressPayload, CustomerRepositoryI } from './interfaces/customer.interface';
 
 @injectable()
 class CustomerRepository implements CustomerRepositoryI {

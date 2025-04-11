@@ -1,8 +1,8 @@
 import { inject, injectable } from 'inversify';
 import { Customer } from '../models/customer.model';
-import { CustomerServiceI } from './interfaces/interface.service';
+import { CustomerServiceI } from './interfaces/customer.interface';
 import { TYPES } from '../const';
-import { AddressPayload, CustomerRepositoryI } from '../repository/interfaces/interface.repo';
+import { AddressPayload, CustomerRepositoryI } from '../repository/interfaces/customer.interface';
 
 @injectable()
 class CustomerService implements CustomerServiceI {
