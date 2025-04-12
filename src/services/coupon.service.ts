@@ -1,8 +1,9 @@
 import { inject, injectable } from 'inversify';
-import { CouponI } from '../models/coupon.model';
+import { CouponI, CouponQueryI, UpdateCouponI } from '../models/coupon.model';
 import { CouponServiceI } from './interfaces/coupon.interface';
 import { TYPES } from '../const';
 import { CouponRepositoryI } from '../repository/interfaces/coupon.interface';
+import { AggregatePaginateResult } from 'mongoose';
 
 @injectable()
 export class CouponService implements CouponServiceI {
@@ -15,5 +16,15 @@ export class CouponService implements CouponServiceI {
             throw new Error('coupon is already exists');
         }
         return await this.repo.createCouponRepo(payload);
+    }
+
+    async updateCoupon(payload: UpdateCouponI, id: string): Promise<CouponI | null> {
+        const coupon = await this.repo.findById(id);
+        if (!coupon) throw new Error('Coupon could not found!');
+        return this.repo.updateCoupon(payload, id);
+    }
+
+    async getAllCoupons(query: CouponQueryI): Promise<AggregatePaginateResult<CouponI>> {
+        return await this.repo.getAllCoupons(query);
     }
 }

@@ -1,5 +1,5 @@
 import { Request } from 'express';
-import { CouponI } from '../models/coupon.model';
+import { CouponI, UpdateCouponI } from '../models/coupon.model';
 
 export interface CustomerRequest extends AuthRequest {
     body: {
@@ -10,6 +10,10 @@ export interface CustomerRequest extends AuthRequest {
 export interface CouponRequest extends AuthRequest {
     body: CouponI;
 }
+export interface UpdateCouponRequest extends AuthRequest {
+    body: UpdateCouponI;
+}
+
 export interface AuthRequest extends Request {
     params: {
         id: string;

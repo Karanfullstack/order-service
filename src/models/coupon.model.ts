@@ -1,12 +1,15 @@
-import { model, Schema } from 'mongoose';
+import { AggregatePaginateModel, model, Schema } from 'mongoose';
+import paginate from 'mongoose-aggregate-paginate-v2';
 
 export interface CouponI {
-    title: string;
+    title: string | RegExp;
     code: string;
     discount: number;
     validUpTo: Date;
     tenantId: string;
 }
+export type UpdateCouponI = Partial<CouponI>;
+export type CouponQueryI = Partial<CouponI> & { page?: number; limit?: number };
 
 const couponSchema = new Schema<CouponI>(
     {
@@ -34,5 +37,6 @@ const couponSchema = new Schema<CouponI>(
     { timestamps: true },
 );
 
-const CouponModel = model('Coupon', couponSchema);
+couponSchema.plugin(paginate);
+const CouponModel = model<CouponI, AggregatePaginateModel<CouponI>>('Coupon', couponSchema);
 export default CouponModel;
