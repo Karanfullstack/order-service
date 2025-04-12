@@ -4,7 +4,7 @@ import { CanAccess, TYPES } from '../const';
 import { asyncWrapper } from '../utils/AsyncWrapper';
 import authenticate from '../middleware/authenticate';
 import { CouponController } from '../controllers/coupon.controller';
-import { couponQueryValidator } from '../validators/coupon.query';
+import { CouponParamsValidator, couponQueryValidator } from '../validators/coupon.query';
 import { accessAuth } from '../middleware/access';
 import { productAccess } from '../middleware/productAccess';
 
@@ -43,11 +43,11 @@ router.get(
 // @ Protected
 // @ Delete Coupon
 router.delete(
-    '/',
+    '/:id',
     authenticate,
     accessAuth([CanAccess.ADMIN, CanAccess.MANAGER]) as RequestHandler,
     productAccess() as RequestHandler,
-    couponQueryValidator,
+    CouponParamsValidator,
     asyncWrapper(couponCotorller.delete.bind(couponCotorller) as RequestHandler),
 );
 export default router;

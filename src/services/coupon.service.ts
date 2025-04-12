@@ -4,6 +4,7 @@ import { CouponServiceI } from './interfaces/coupon.interface';
 import { TYPES } from '../const';
 import { CouponRepositoryI } from '../repository/interfaces/coupon.interface';
 import { AggregatePaginateResult } from 'mongoose';
+import createHttpError from 'http-errors';
 
 @injectable()
 export class CouponService implements CouponServiceI {
@@ -28,6 +29,8 @@ export class CouponService implements CouponServiceI {
         return await this.repo.getAllCoupons(query);
     }
     async deleteCoupon(id: string): Promise<CouponI | null> {
+        const coupon = await this.repo.findById(id);
+        if (!coupon) throw createHttpError('404', 'Coupon not found');
         return await this.repo.deleteCoupon(id);
     }
 }

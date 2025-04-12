@@ -4,8 +4,9 @@ import { CouponServiceI } from '../services/interfaces/coupon.interface';
 import { NextFunction, Response } from 'express';
 import { AuthRequest, CouponRequest, UpdateCouponRequest } from '../types';
 import logger from '../config/logger';
-import { matchedData } from 'express-validator';
+import { matchedData, validationResult } from 'express-validator';
 import { CouponQueryI } from '../models/coupon.model';
+import createHttpError from 'http-errors';
 
 export class CouponController {
     constructor(@inject(TYPES.CouponService) private service: CouponServiceI) {}
@@ -41,9 +42,16 @@ export class CouponController {
         res.json({ success: true, coupons });
     }
 
-    async delete(req: AuthRequest, res: Response, _next: NextFunction) {
+    async delete(req: AuthRequest, res: Response, next: NextFunction) {
         const id = req.params.id;
         logger.info('Requesting Coupon Id', id);
+        const validation = validationResult(req);
+
+        if (!validation.isEmpty()) {
+            logger.error('Validation Error', validation.array()[0].msg);
+            return next(createHttpError(400, validation.array()[0].msg as string));
+        }
+
         const deletedCoupon = await this.service.deleteCoupon(id);
         logger.info('Coupon has been deleted', deletedCoupon);
         res.json({ success: true, deletedCoupon });

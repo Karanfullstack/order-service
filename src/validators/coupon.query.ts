@@ -1,4 +1,5 @@
-import { query } from 'express-validator';
+import { param, query } from 'express-validator';
+import { isValidObjectId } from 'mongoose';
 
 export const couponQueryValidator = [
     query('title').optional().isString().withMessage('title must be a string'),
@@ -41,5 +42,16 @@ export const couponQueryValidator = [
                 }
                 return true;
             }
+        }),
+];
+
+export const CouponParamsValidator = [
+    param('id')
+        .isString()
+        .withMessage('Params must be a string value')
+        .custom((value) => {
+            const isvalid = isValidObjectId(value);
+            if (!isvalid) throw new Error('Params is not a valid object id');
+            return true;
         }),
 ];
