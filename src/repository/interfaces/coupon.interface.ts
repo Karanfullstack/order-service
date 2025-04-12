@@ -7,4 +7,5 @@ export interface CouponRepositoryI {
     findByCode(code: string, tenantId: string): Promise<CouponI | null>;
     findById(id: string): Promise<CouponI | null>;
     getAllCoupons(query: CouponQueryI): Promise<AggregatePaginateResult<CouponI>>;
+    deleteCoupon(id: string): Promise<CouponI | null>;
 }

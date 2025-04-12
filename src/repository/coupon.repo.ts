@@ -45,4 +45,7 @@ export class CouponRepository implements CouponRepositoryI {
         ]);
         return await CouponModel.aggregatePaginate(aggrigate, { page, limit });
     }
+    async deleteCoupon(id: string): Promise<CouponI | null> {
+        return await CouponModel.findByIdAndDelete(id);
+    }
 }

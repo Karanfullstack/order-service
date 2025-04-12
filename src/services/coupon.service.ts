@@ -27,4 +27,7 @@ export class CouponService implements CouponServiceI {
     async getAllCoupons(query: CouponQueryI): Promise<AggregatePaginateResult<CouponI>> {
         return await this.repo.getAllCoupons(query);
     }
+    async deleteCoupon(id: string): Promise<CouponI | null> {
+        return await this.repo.deleteCoupon(id);
+    }
 }

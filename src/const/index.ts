@@ -9,3 +9,8 @@ export const TYPES = {
     CouponService: Symbol.for('CouponService'),
     CouponRepository: Symbol.for('CouponRespository'),
 };
+
+export enum CanAccess {
+    ADMIN = 'admin',
+    MANAGER = 'manager',
+}

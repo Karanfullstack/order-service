@@ -38,6 +38,7 @@ export default tseslint.config(
                 },
             ],
             '@typescript-eslint/require-await': 'off',
+            '@typescript-eslint/no-explicit-any': 'off',
         },
     },
 

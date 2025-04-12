@@ -11,7 +11,7 @@ export class CouponController {
     constructor(@inject(TYPES.CouponService) private service: CouponServiceI) {}
 
     // @ Create Coupon Controller
-    async createCoupon(req: CouponRequest, res: Response, _next: NextFunction) {
+    async create(req: CouponRequest, res: Response, _next: NextFunction) {
         const payload = req.body;
         logger.info('Payload Requesting', payload);
 
@@ -32,11 +32,20 @@ export class CouponController {
         res.json({ success: true, updatedCoupon });
     }
 
-    async allCoupons(req: AuthRequest, res: Response, _next: NextFunction) {
+    async getCoupons(req: AuthRequest, res: Response, _next: NextFunction) {
         const validation: CouponQueryI = matchedData(req, { onlyValidData: true });
         logger.info('Requesting Query', validation);
+        logger.info('Auth Requesting', req.auth);
         const coupons = await this.service.getAllCoupons(validation);
         logger.info('Coupons Fetched', coupons);
         res.json({ success: true, coupons });
+    }
+
+    async delete(req: AuthRequest, res: Response, _next: NextFunction) {
+        const id = req.params.id;
+        logger.info('Requesting Coupon Id', id);
+        const deletedCoupon = await this.service.deleteCoupon(id);
+        logger.info('Coupon has been deleted', deletedCoupon);
+        res.json({ success: true, deletedCoupon });
     }
 }
