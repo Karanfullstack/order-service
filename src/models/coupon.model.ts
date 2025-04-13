@@ -7,6 +7,7 @@ export interface CouponI {
     discount: number;
     validUpTo: Date;
     tenantId: string;
+    valid?: boolean;
 }
 export type UpdateCouponI = Partial<CouponI>;
 export type CouponQueryI = Partial<CouponI> & { page?: number; limit?: number };

@@ -6,4 +6,5 @@ export interface CouponServiceI {
     updateCoupon(payload: UpdateCouponI, id: string): Promise<CouponI | null>;
     getAllCoupons(query: CouponQueryI): Promise<AggregatePaginateResult<CouponI>>;
     deleteCoupon(id: string): Promise<CouponI | null>;
+    verifyCoupone(code: string): Promise<CouponI>;
 }

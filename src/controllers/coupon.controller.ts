@@ -5,8 +5,9 @@ import { NextFunction, Response } from 'express';
 import { AuthRequest, CouponRequest, UpdateCouponRequest } from '../types';
 import logger from '../config/logger';
 import { matchedData, validationResult } from 'express-validator';
-import { CouponQueryI } from '../models/coupon.model';
+import { CouponQueryI, UpdateCouponI } from '../models/coupon.model';
 import createHttpError from 'http-errors';
+import { convertIntoIso } from '../utils/validateDate';
 
 export class CouponController {
     constructor(@inject(TYPES.CouponService) private service: CouponServiceI) {}
@@ -27,8 +28,11 @@ export class CouponController {
         logger.info('Requesting Id', id);
         logger.info('Requesting Auth', auth);
         logger.info('Requesting Body', payload);
+        const toIsoDates = convertIntoIso(payload.validUpTo as Date);
+        logger.info('ISO Date Request', toIsoDates);
 
-        const updatedCoupon = await this.service.updateCoupon(payload, id);
+        const updatePayload: UpdateCouponI = { ...payload, validUpTo: toIsoDates };
+        const updatedCoupon = await this.service.updateCoupon(updatePayload, id);
         logger.info('Coupon Updated', updatedCoupon);
         res.json({ success: true, updatedCoupon });
     }
@@ -55,5 +59,12 @@ export class CouponController {
         const deletedCoupon = await this.service.deleteCoupon(id);
         logger.info('Coupon has been deleted', deletedCoupon);
         res.json({ success: true, deletedCoupon });
+    }
+    async verify(req: CouponRequest, res: Response, _next: NextFunction) {
+        const code = req.body.code;
+        logger.info('Requesting Code', code);
+        const coupon = await this.service.verifyCoupone(code);
+        logger.info('Veryfied Coupon Result:', coupon);
+        res.json({ success: coupon.valid, coupon });
     }
 }

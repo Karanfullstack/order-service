@@ -50,4 +50,12 @@ router.delete(
     CouponParamsValidator,
     asyncWrapper(couponCotorller.delete.bind(couponCotorller) as RequestHandler),
 );
+
+// @ Public
+// @ Verify Coupon Code
+router.post(
+    '/verify',
+    authenticate,
+    asyncWrapper(couponCotorller.verify.bind(couponCotorller) as RequestHandler),
+);
 export default router;

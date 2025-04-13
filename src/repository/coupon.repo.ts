@@ -11,13 +11,18 @@ export class CouponRepository implements CouponRepositoryI {
         logger.info('Coupon Repo', coupon);
         return coupon;
     }
-    async findByCode(code: string, tenantId: string): Promise<CouponI | null> {
+    async findByCodeAndTenant(code: string, tenantId: string): Promise<CouponI | null> {
         return await CouponModel.findOne({ tenantId, code });
     }
 
     async findById(id: string): Promise<CouponI | null> {
         return await CouponModel.findById(id);
     }
+
+    async findByCode(code: string): Promise<CouponI | null> {
+        return await CouponModel.findOne({ code }).select('-__v').lean();
+    }
+
     async updateCoupon(payload: UpdateCouponI, id: string): Promise<CouponI | null> {
         return await CouponModel.findOneAndUpdate(
             { _id: id },
